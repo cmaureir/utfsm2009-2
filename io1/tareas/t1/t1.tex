@@ -1,0 +1,234 @@
+\documentclass[letter, 10pt]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[dvips]{graphicx}
+\usepackage{url}
+\usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
+
+\begin{document}
+\title{Investigación de Operaciones I \\
+	\begin{Large}Tarea 1: Modelamiento, Resolución y
+	Análisis de Problemas de Programación Lineal\end{Large}}
+\author{Cristián Maureira \\ 2673030-9 \\ \texttt{cmaureir@inf.utfsm.cl} \and
+	Gabriel Zamora \\ 2673070-8 \\ \texttt{gzamora@inf.utfsm.cl}}
+\date{\today}
+\maketitle
+
+\section{Educación en Peras Buenas y Pelotillehue}
+
+\begin{enumerate}
+	\item Modelo de Programación Lineal.
+		\begin{itemize}
+			\item \textbf{Variables:}
+				\begin{itemize}
+					\item $P_{ij}$: Cantidad de estudiantes que pertenecen a la población
+						$i$ de Peras Buenas y que irían a la escuela $j$, i = \{1,2,3\},
+						j = \{1,2\}
+					\item $Q_{ij}$: Cantidad de estudiantes que pertenecen a la población
+						$i$ de Pelotillehue y que irían a la escuela $j$, i = \{1,2\},
+						j = \{1,2\}
+				\end{itemize}
+			\item \textbf{Constantes:}
+				\begin{itemize}
+					\item $S_{ij}$: Distancia recorrida por los estudiantes que pertenecen
+						a la población $i$ de Peras Buenas y que irían a la escuela
+						$j$, i = \{1,2,3\}, j = \{1,2\}
+					\item $S_{11} = 20$, $S_{21} = 12$, $S_{31} = 10$, $S_{12} = 15$, $S_{22} = 18$,
+					      $S_{32} = 8$
+					\item $T_{ij}$: Distancia recorrida por los estudiantes que pertenecen
+						a la población $i$ de Pelotillehue y que irían a la escuela
+						$j$, i = \{1,2\}, j = \{1,2\}
+					\item $T_{11} = 4$, $T_{21} = 5$, $T_{12} = 6$, $T_{22} = 5$
+					\item $E_1$: Cantidad máxima de personas en la escuela 1, $E_1$ = 1500
+					\item $E_2$: Cantidad máxima de personas en la escuela 2, $E_2$ = 2000
+					\item $U_{i}$: Cantidad habitantes de la población i de Peras Buenas, i = \{1,2,3\}
+					\item $U_1 = 500, U_2 = 450, U_3 = 300$
+					\item $V_{i}$: Cantidad habitantes de la población i de Pelotillehue, i = \{1,2\}
+					\item $V_1 = V_2 = 1000$
+				\end{itemize}
+			\item \textbf{Función Objetivo:}
+				$$Min\ Z\ =\ \sum_{i=1}^{3}(\sum_{j=1}^{2}P_{ij}\cdot S_{ij})\ +\ \sum_{i=1}^{2}(\sum_{j=1}^{2}Q_{ij}\cdot T_{ij}),$$
+				siendo Z la suma de las distancias recorridas por todos los estudiantes.
+			\item \textbf{Restricciones}
+				\begin{itemize}
+					\item Capacidad escuelas:
+			 			\begin{itemize}
+							\item $\sum_{i=1}^{3}P_{i1} + \sum_{i=1}^{2}Q_{i1} \leq E_1 = 1500$
+							\item $\sum_{i=1}^{3}P_{i2} + \sum_{i=1}^{2}Q_{i2} \leq E_2 = 2000$
+						\end{itemize}
+					\item Habitantes por población:
+						\begin{itemize}
+							\item $\sum_{j=1}^2 P_{1j} = U_1 = 500$
+							\item $\sum_{j=1}^2 P_{2j} = U_2 = 450$
+							\item $\sum_{j=1}^2 P_{3j} = U_3 = 300$
+							\item $\sum_{j=1}^2 Q_{1j} = V_1 = 1000$
+							\item $\sum_{j=1}^2 Q_{2j} = V_2 = 1000$
+						\end{itemize}
+					\item Naturaleza:
+						\begin{itemize}
+							\item $0 \leq P11, P12, P21, P22, P31, P32, Q11, Q12, Q21, Q22 \in \Re$
+						\end{itemize}
+				\end{itemize}
+		\end{itemize}
+
+	\item Modelo LINDO.
+		A continuación se presenta  el modelamiento en el software LINDO.
+
+		\begin{verbatim}
+		! Función objetivo
+		MIN 20P11 + 15P12 + 12P21 + 18P22 + 10P31 + 8P32 + 4Q11 + 6Q12 + 5Q21 + 5Q22
+		ST
+		! Restricciones
+		! Capacidad escuelas:
+		P11 + P21 + P31 + Q11 + Q21 <= 1500
+		P12 + P22 + P32 + Q12 + Q22 <= 2000
+		! Habitantes:
+		P11 + P12 = 500
+		P21 + P22 = 450
+		P31 + P32 = 300
+		Q11 + Q12 = 1000
+		Q21 + Q22 = 1000
+		END
+		! Naturaleza
+		SLB P11 0
+		SLB P12 0
+		SLB P21 0
+		SLB P22 0
+		SLB P31 0
+		SLB P32 0
+		SLB Q11 0
+		SLB Q12 0
+		SLB Q21 0
+		SLB Q22 0
+		\end{verbatim}
+	
+		Claramente podemos notar que la forma en la cual podemos modelar cualquier problema
+		de programación lineal en dicho software, es mucho más cómoda y ordenada
+		con respecto a un modelamiento realizado manualmente.
+
+		Además, para realizar éste tipo de modelamiento no es necesario la declaración
+		de distintas constantes, como en el primer modelamiento.
+		
+		Finalmente, resulta primordial la existencia de software que faciliten la ardua tarea
+		para resolver estos tipos de problemas, ya que nos podemos dar cuenta que en cosas de
+		segundos podemos obtener un resultados que nos puede costar obtener, un par de minutos.
+	
+	\item Resultados Modelo.
+		\begin{itemize}
+			\item \textbf{Objetivos}\\
+				\begin{center}
+					\begin{tabular}{|l|l|}
+						\hline
+						Z = 24300 & $P_{32}$ = 300\\
+						\hline
+						$P_{11}$ = 0 & $Q_{11}$ = 1000\\
+						\hline
+						$P_{12}$ = 500 & $Q_{12}$ = 0\\
+						\hline
+						$P_{21}$ = 450 & $Q_{21}$ = 50\\
+						\hline
+						$P_{22}$ = 0 & $Q_{22}$ = 950\\
+						\hline
+						$P_{31}$ = 0 & \\
+						\hline
+					\end{tabular}
+				\end{center}
+			\item \textbf{Constantes\ relacionadas\ a\ restricciones:}\\
+				\begin{center}
+					\begin{tabular}{|l|l|}
+						\hline
+						$E_1$ & 1500 \\
+						\hline
+						$E_2$ & 1750 \\
+						\hline
+						$U_1$ & 500 \\
+						\hline
+						$U_2$ & 450 \\
+						\hline
+						$U_3$ & 300 \\
+						\hline
+						$V_1$ & 1000 \\
+						\hline
+						$V_2$ & 1000 \\
+						\hline
+					\end{tabular}
+				\end{center}
+		\end{itemize}
+	\item Preguntas:\\
+%		\begin{table}[h!b!p!]
+		\begin{table}[h!t]
+			\begin{center}	
+				\begin{tabular}{|l|l|l|l|l|}
+					\hline
+					$Variables$ & $from$  & $till$  & $from\_value$ & $till\_value$ \\ \hline
+					objective & 24300 & 24300 & 24300     & 24300 \\ \hline
+					P11	  & 15    & +inf  & 50        & +inf \\ \hline
+					P12 	  & -inf  & 20    & -inf      & 20  \\ \hline
+					P21 	  & -inf  & 18    & -inf      & 18 \\ \hline
+					P22 	  & 12    & +inf  & 450       & +inf \\ \hline
+					P31 	  & 8     & +inf  & 50        & +inf \\ \hline
+					P32 	  & -inf  & 10    & -inf      & 10 \\ \hline
+					Q11 	  & -inf  & 6     & -inf      & 6 \\ \hline
+					Q12 	  & 4     & +inf  & 950       & +inf \\ \hline
+					Q21 	  & 3     & 5     & -inf      & 5 \\ \hline
+					Q22 	  & 5     & 7     & -inf      & 7 \\ \hline
+				\end{tabular}
+			\end{center}
+			\caption{Tabla acerca de la información del análisis de sensibilidad ($lpsolve$)}
+			\label{tab:1}
+		\end{table}
+		\begin{enumerate}
+			\item ¿En cuánto puede variar las capacidades máximas de las escuelas
+				de tal manera de mantener el óptimo?
+				Realizando un análisis de sensibilidad por cada coeficiente que
+				representa a las capacidades de las escuelas:
+
+				\begin{itemize}
+					\item Capacidad escuela 1 ($E_1$)\\
+						Tomando en cuenta el enunciado de nuestro problema,
+						sabemos que la capacidad de la escuela uno, posee un valor
+						inicial de $E_1 = 1500$.
+						Luego de obtener los resultados de nuestro modelo,
+						nos damos cuenta que dicho valor \textbf{no} ha variado en nada,
+						los cual nos dice que esta constante es un factor primordial
+						al momento de realizar nuestro análisis.
+					\item Capacidad escuela 2 ($E_2$)\\
+						Tomando en cuenta el enunciado de nuestro problema,
+						sabemos que la capacidad de la escuela uno, posee un valor
+						inicial de $E_2 = 2000$.
+						Luego de obtener los resultados de nuestro modelo,
+						nos damos cuenta que dicho valor ha cambiado a $E_2 = 1750$,
+						lo cual nos da un rango de variación entre $1750 < E_2 < 2000$
+						los cual nos dice que esta constante posee cierta holgura
+						al momento de realizar nuestro análisis.
+				\end{itemize}
+
+			\item \emph{¿Cuánto se puede variar el coeficiente de las variables no básicas
+				de tal manera que el objetivo se mantenga?}
+			
+			Las variables ``no básicas'' tienen la característica que en el resultado final,
+			poseen un coeficiente igual a $0$, por lo tanto algún cambio en dicho coeficiente
+			no afectará en lo absoluto a nuestro objetivo.
+
+			Claramente podemos ver que la variables ``no básicas'' en la tabla anterior~\ref{tab:1}
+			poseen un $+inf$ en el campo $till\_value$ (P11, P22, P31, Q12), lo cual nos indica
+			que pueden variar hasta un valor extremadamente grande, sin afectar nuestro objetivo.
+
+			\item ¿Cuánto se puede variar el coeficiente de las variables básicas de
+				tal manera que el objetivo se mantenga?
+			
+			Las variables ``básicas'' tienen la característica que en el resultado final,
+			poseen un coeficiente distinto a $0$, por lo tanto algún cambio en dicho coeficiente
+			afectará a nuestro objetivo.
+
+			Claramente podemos ver que las variables ``básicas'' en la tabla anterior~\ref{tab:1}
+			poseen un valor distinto de $+inf$ en el campo $till\_value$ (P12, P21, P32, Q11, Q21, Q22),
+			lo cual nos indica que dichos coeficientes pueden variar hasta un valor menor que el
+			que aparece en dicha columna. Por ejemplo P12 puede variar hasta algún valor $< 20$
+		\end{enumerate}
+%Fin Análisis de Sensibilidad
+\end{enumerate}
+
+\end{document}

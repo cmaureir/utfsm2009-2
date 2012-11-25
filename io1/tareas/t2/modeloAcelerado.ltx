@@ -1,0 +1,105 @@
+! Funcion objetivo
+MIN 100 A1_2 + 50 A1_3 + 300 A1_4 + 100 A2_3 + 500 A4_3 + 50 A4_5 + 150 A2_6 +
+70 A3_6 + 60 A4_6 + 350 A5_6 + 20 A6_7 + 80 A7_8 + 40 A8_9 + 230 A8_10 +
+10 A9_10 + 30 A5_11 + 500 A9_11 +100 A10_11 + 20 A9_12 + 140 A11_12 + 200 A12_13 +
+45 A13_14 + 100 A14_15 + 150 A15_16 + 200 A16_17
+ST
+! Restricciones
+X2  - X1  + A1_2   > 2 
+X3  - X1  + A1_3   > 2 
+X4  - X1  + A1_4   > 4 
+X3  - X2  + A2_3   > 2 
+X3  - X4  + A4_3   > 2 
+X5  - X4  + A4_5   > 3 
+X6  - X2  + A2_6   > 2 
+X6  - X3  + A3_6   > 2 
+X6  - X4  + A4_6   > 2 
+X6  - X5  + A5_6   > 2 
+X7  - X6  + A6_7   > 3 
+X8  - X7  + A7_8   > 2 
+X9  - X8  + A8_9   > 2 
+X10 - X8  + A8_10  > 2 
+X10 - X9  + A9_10  > 3 
+X11 - X5  + A5_11  > 10
+X11 - X9  + A9_11  > 2 
+X11 - X10 + A10_11 > 2 
+X12 - X9  + A9_12  > 2 
+X12 - X11 + A11_12 > 2 
+X13 - X12 + A12_13 > 8 
+X14 - X13 + A13_14 > 2 
+X15 - X14 + A14_15 > 2 
+X16 - X15 + A15_16 > 3 
+X17 - X16 + A16_17 > 2
+
+X17 - X1 < 30
+! Tiempos
+END
+! Naturaleza
+SLB X1 0
+SLB X2 0 
+SLB X3 0 
+SLB X4 0 
+SLB X5 0 
+SLB X6 0 
+SLB X7 0 
+SLB X8 0 
+SLB X9 0 
+SLB X10 0 
+SLB X11 0 
+SLB X12 0 
+SLB X13 0 
+SLB X14 0 
+SLB X15 0 
+SLB X16 0 
+SLB X17 0
+SLB A1_2   0 
+SLB A1_3   0
+SLB A1_4   0
+SLB A2_3   0
+SLB A4_3   0
+SLB A4_5   0
+SLB A2_6   0
+SLB A3_6   0
+SLB A4_6   0
+SLB A5_6   0
+SLB A6_7   0
+SLB A7_8   0
+SLB A8_9   0
+SLB A8_10  0
+SLB A9_10  0
+SLB A5_11  0
+SLB A9_11  0
+SLB A10_11 0
+SLB A9_12  0
+SLB A11_12 0
+SLB A12_13 0
+SLB A13_14 0
+SLB A14_15 0
+SLB A15_16 0
+SLB A16_17 0
+! Aceleraciones maximas
+SUB A1_2   1
+SUB A1_3   1
+SUB A1_4   2
+SUB A2_3   1
+SUB A4_3   1
+SUB A4_5   2
+SUB A2_6   1
+SUB A3_6   1
+SUB A4_6   1
+SUB A5_6   1
+SUB A6_7   2
+SUB A7_8   1
+SUB A8_9   1
+SUB A8_10  1
+SUB A9_10  2
+SUB A5_11  2
+SUB A9_11  1
+SUB A10_11 1
+SUB A9_12  1
+SUB A11_12 1
+SUB A12_13 2
+SUB A13_14 1
+SUB A14_15 1
+SUB A15_16 2
+SUB A16_17 1

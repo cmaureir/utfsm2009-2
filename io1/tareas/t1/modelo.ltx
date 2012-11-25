@@ -1,0 +1,25 @@
+! Funcion objetivo
+MIN 20P11 + 15P12 + 12P21 + 18P22 + 10P31 + 8P32 + 4Q11 + 6Q12 + 5Q21 + 5Q22
+ST
+! Restricciones
+! Capacidad escuelas:
+P11 + P21 + P31 + Q11 + Q21 <= 1500
+P12 + P22 + P32 + Q12 + Q22 <= 2000
+! Habitantes:
+P11 + P12 = 500
+P21 + P22 = 450
+P31 + P32 = 300
+Q11 + Q12 = 1000
+Q21 + Q22 = 1000
+END
+! Naturaleza
+SLB P11 0
+SLB P12 0
+SLB P21 0
+SLB P22 0
+SLB P31 0
+SLB P32 0
+SLB Q11 0
+SLB Q12 0
+SLB Q21 0
+SLB Q22 0
