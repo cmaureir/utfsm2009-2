@@ -1,0 +1,70 @@
+%%% Esqueleto base de la presentacion
+%%% No agregar las paginas con un include
+%%% Lo que quieran aportar deben ser usuarios del TRAC
+
+\documentclass{beamer}
+\usepackage[spanish,activeacute]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{url}
+\usepackage{graphics}
+\definecolor{gray2}{rgb}{100,100,100}
+
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          alternativetitlepage=true,% Use the fancy title page.
+          titlepagelogo=img/logo,% Logo for the first page.
+          watermark=img/di-off,% Watermark used in every page.
+          watermarkheight=100px,% Height of the watermark.
+          watermarkheightmult=4,% The watermark image is 4 times bigger
+                                % than watermarkheight.
+          ]{Torino}
+
+\usecolortheme{nouvelle}
+
+\author{\normalsize
+\textbf{Integrantes:}\\
+Rodrigo Fernández\\
+Ignacio Villacura\\
+Gabriel Zamora\\
+Cristian Maureira\\
+\textbf{Jefe de Proyecto:}\\
+Esteban Bombal\\
+\textcolor{gray}{tsc@csrg.inf.utfsm.cl}
+}
+
+\title{\Huge Control de Acceso Lógico}
+\subtitle{\Large \textit{``Presentación Final''}}
+\institute{Universidad Técnica Federico Santa María}
+%\date{\today}
+
+\begin{document}
+\include{src/portada}
+
+\section{Resumen}
+
+\frame{
+\frametitle{Resumen}
+
+Implementación de un framework de seguridad basado en Java, llamado \textbf{JAAS}. 
+Establecer una conexión a servicios de directorios mediante \textbf{LDAP} para la conexión a la máquina \textbf{JBoss} correspondiente.
+
+}
+
+\section{Organización}
+\include{src/organizacion}
+
+\section{Acerca}
+\include{src/acerca}
+
+\section{Desarrollo}
+\include{src/desarrollo}
+
+\section{Conclusiones}
+\include{src/conclusiones}
+
+\section{Agradecimientos}
+\include{src/agradecimientos}
+
+\end{document}

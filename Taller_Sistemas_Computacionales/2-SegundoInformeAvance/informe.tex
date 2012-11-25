@@ -1,0 +1,38 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc} %Codificacion del texto (ISO Latin1 encoding)
+\usepackage{graphicx} %Permite exportar imagenes en formato eps
+\usepackage{fancyhdr} %Permite acomodar a tu gusto la parte de arriba y
+\usepackage[hmargin=1in,vmargin=1in, lmargin=1in, rmargin=1in]{geometry}
+\usepackage[final]{pdfpages}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+
+\pagestyle{fancyplain}
+
+\lhead{\it Segundo Semestre del 2009} %Parte superior izquierda
+\rhead{\bf \it Informe de Avance II} %Parte superior derecha
+\lfoot{} %Parte inferior izquierda. \thepage indica
+% el numero de pagina
+\cfoot{} %Parte inferior central
+\rfoot{\bf \thepage} %Parte inferior derecha
+\renewcommand{\footrulewidth}{0.4pt} %Linea de separacion inferior
+
+\title{Informe de Avance II}
+
+\author{Esteban Bombal, Rodrigo Fernández, Cristián Maureira,\\Ignacio Villacura y Gabriel Zamora}
+\begin{document}
+\bibliographystyle{plain}
+\maketitle\thispagestyle{empty}
+
+\section{Revisión del Plano del Trabajo}
+\label{op:revision}
+\input{src/1-RevisionPlanoDelTrabajo}
+
+\newpage
+\section{Reprogramación de Actividades}
+\label{target:reprogramacion}
+\input{src/2-ReprogramacionDeActividades}
+
+\vfill \hfill CM/GZ/IV/EB/RF/DI/UTFSM/2009
+\end{document}

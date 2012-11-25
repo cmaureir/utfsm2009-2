@@ -1,0 +1,404 @@
+\lstset{basicstyle=\footnotesize, breaklines=true, stringstyle=\ttfamily, numbers=left,
+%frame=shadowbox, rulesepcolor=\color{black}}
+frame=single, linewidth={16cm}}
+	\subsection{Instalación de base de datos LDAP}
+	\begin{enumerate}
+		\item Bajar e instalar OpenLDAP.
+\begin{lstlisting}
+$ yum install openldap openldap-devel openldap-servers openldap-clients
+\end{lstlisting}
+		\item Configurar slapd.conf (hay que especificar el suffix, rootdn (usuario al
+cual JBoss se conectará), rootpw, y opcionalmente el directorio.
+\begin{lstlisting}
+#############################################################
+# ldbm database definitions
+#############################################################
+
+database	bdb
+suffix		"dc=example,dc=com"
+rootdn        	"cn=Manager,dc=example,dc=com"
+# Cleartext passwords, especially for the rootdn, should
+# be avoid.  See slappasswd(8) and slapd.conf(5) for details.
+# Use of strong authentication encouraged.
+rootpw       	secret
+# The database directory MUST exist prior to running slapd AND
+# should only be accessible by the slapd and slap tools.
+# Mode 700 recommended.
+directory	/my/custom/openldap/data/directory
+# Indices to maintain
+index	objectClass	eq
+\end{lstlisting}
+			\item Configuramos el puerto a utilizar y especificamos el camino a slapd.conf:
+(se recomienda un puerto mayor al 1024 para no tener que usar privilegios de
+root)
+\begin{lstlisting}
+/path/to/slapd -h "ldap://127.0.0.1:10389" -f /path/to/my/custom/slapd.conf
+\end{lstlisting}
+ Ej:
+\begin{lstlisting}
+$ /usr/sbin/slapd -h "ldap://127.0.0.1:10389" -f /etc/openldap/slapd.conf
+\end{lstlisting}
+		\item  Necesitamos tener los necesarios usuarios y grupos en LDAP que serán
+utilizados en JBoss. Aca va el ldap-setup.ldif que tiene la estructura que
+corresponde a la configuración de ejemplo que utilizaremos con JBoss. Para
+esto utilizamos el siguiente comando:
+\begin{lstlisting}
+$ ldapadd -x -W -D 'cn=Manager,dc=example,dc=com' -f ldap-setup.ldif -c
+\end{lstlisting}
+
+
+\begin{lstlisting}
+# Top-level structure of the LDAP hierarchy
+
+dn: dc=example,dc=com
+objectclass: top
+objectclass: dcObject
+objectclass: organization
+dc: example
+o: Example Corporation
+
+dn: ou=People,dc=example,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: People
+
+dn: ou=Groups,dc=example,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: Groups
+
+# Users.
+
+# Note that passwords are cleartext here, but an LDAP will allow safer ways
+# like using hashes.
+
+# The master user has all privileges: handy during development.
+
+dn: uid=master,ou=People,dc=example,dc=com
+objectclass: top
+objectclass: uidObject
+objectclass: person
+uid: master
+cn: Master Admin
+sn: Admin
+userPassword: master
+
+# This admin user has rights to all admin roles: in this case functional admin
+# and technical admin.
+
+dn: uid=admin,ou=People,dc=example,dc=com
+objectclass: top
+objectclass: uidObject
+objectclass: person
+uid: admin
+cn: Admin Nonymous
+sn: Admin
+userPassword: admin
+
+# A standard user of your system.
+
+dn: uid=member,ou=People,dc=example,dc=com
+objectclass: top
+objectclass: uidObject
+objectclass: person
+uid: member
+cn: Marcel Ember
+sn: Member
+userPassword: member
+
+# Groups. 
+# Assigning somebody to one or more groups will allow you to do role-based
+# authorization in an application.
+
+dn: cn=NormalUser,ou=Groups,dc=example,dc=com
+objectclass: top
+objectclass: groupOfNames
+cn: NormalUser
+description: the group of regular users
+member: uid=normaluser,ou=People,dc=example,dc=com
+member: uid=master,ou=People,dc=example,dc=com
+
+dn: cn=FunctionalAdmin,ou=Groups,dc=example,dc=com
+objectclass: top
+objectclass: groupOfNames
+cn: FunctionalAdmin
+description: the role to manage certificates (the RPKI engine)
+member: uid=admin,ou=People,dc=example,dc=com
+member: uid=master,ou=People,dc=example,dc=com
+
+dn: cn=TechnicalAdmin,ou=Groups,dc=example,dc=com
+objectclass: top
+objectclass: groupOfNames
+cn: TechnicalAdmin
+description: the role to manage resources
+member: uid=admin,ou=People,dc=example,dc=com
+member: uid=master,ou=People,dc=example,dc=com
+\end{lstlisting}
+	\end{enumerate}
+
+	\subsection{Implementación del SSO en JBoss}
+	\begin{enumerate}
+		\item Para activar SSO, simplemente hay que descomentar la siguiente
+linea del archivo de configuración (TomCat)
+JBOSS\_HOME/server/tu\_configuracion/deploy/jboss-web.deployer/server.xml:
+\begin{lstlisting}
+<Valve className="org.apache.catalina.authenticator.SingleSignOn" /> 
+\end{lstlisting}
+
+	\end{enumerate}
+	\subsection{Integración de LDAP utilizando JAAS en servidores web JBoss}
+	\begin{enumerate}
+			\item JBoss usa el LoginLdapModule para conectarse con LDAP.
+			Configuramos la application-policy en el login-config.xml que puede ser encontrado en JBOSS\_HOME/server/default.conf. Esto permitirá a JBoss conectarse con el servidor LDAP y le dirá la estructura que debe tener, como su usuario, password y los roles que encontrará.
+\begin{lstlisting}
+<?xml version='1.0'?>
+<!DOCTYPE policy PUBLIC
+      "-//JBoss//DTD JBOSS Security Config 3.0//EN"
+      "http://www.jboss.org/j2ee/dtd/security_config.dtd">
+
+<policy>
+	<application-policy name = "mysecuritydomain">
+	    <authentication>
+	        <login-module code="org.jboss.security.auth.spi.LdapLoginModule" flag="required">
+	            <module-option name="java.naming.factory.initial">com.sun.jndi.ldap.LdapCtxFactory</module-option>
+	
+	            <module-option name="java.naming.provider.url">ldap://127.0.0.1:10389</module-option>
+	            <module-option name="java.naming.security.authentication">simple</module-option>
+	
+				<module-option name="java.naming.security.principal">cn=Manager,dc=ripe,dc=net</module-option>
+				<module-option name="java.naming.security.credentials">secret</module-option>
+				
+	            <module-option name="principalDNPrefix">uid=</module-option>
+	            <module-option name="principalDNSuffix">,ou=People,dc=example,dc=com</module-option>
+	            <module-option name="rolesCtxDN">ou=Groups,dc=ripe,dc=net</module-option>
+	            <module-option name="uidAttributeID">member</module-option>
+	            <module-option name="matchOnUserDN">true</module-option>
+	            <module-option name="roleAttributeID">cn</module-option>
+	            <module-option name="roleAttributeIsDN">false</module-option>
+	            <module-option name="searchTimeLimit">5000</module-option>
+	
+	            <module-option name="searchScope">ONELEVEL_SCOPE</module-option>
+	        </login-module>
+	    </authentication>
+	</application-policy>
+</policy>
+\end{lstlisting}
+			\item Después de esto solo nos queda conectarnos a través del código con JAAS:\\
+			\textit{Este código chequea el usuario/password y obtiene los roles del usuario a traves de JAAS.}
+\begin{lstlisting}
+package net.ripe.certification.ui;
+
+import java.io.IOException;
+import java.security.Principal;
+import java.security.acl.Group;
+import java.util.Enumeration;
+
+import javax.security.auth.Subject;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.callback.UnsupportedCallbackException;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.apache.wicket.Request;
+import org.apache.wicket.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.authentication.AuthenticatedWebSession;
+import org.apache.wicket.authorization.strategies.role.Roles;
+
+public class JAASBasedSession extends AuthenticatedWebSession {
+	
+	public static final String ROLES_GROUP_NAME = "Roles";
+
+	public static final String JBOSS_APPLICATION_POLICY_NAME = "mysecuritydomain";
+
+	private final static Logger log = Logger.getLogger(JAASBasedSession.class);
+	
+	private Subject subject;
+	private Roles roles = new Roles();
+	
+    @SuppressWarnings("deprecation")
+	public JAASBasedSession(AuthenticatedWebApplication app, Request request) {
+        super(app, request);
+    }
+
+    public boolean authenticate(String username, String password) {
+    	if (log.isDebugEnabled()) {
+			// SECURITY WARNING: The password is logged in the clear here. Handy to get all this to work, but remove ASAP.
+    		log.debug("Entering JAASBasedSession.authenticate(" + username + ", " + password + ")");
+    	}
+
+    	boolean authenticated = false;
+    	LoginCallbackHandler handler = new LoginCallbackHandler(username, password);
+    	try {
+    		LoginContext ctx = new LoginContext(JBOSS_APPLICATION_POLICY_NAME, handler);
+			ctx.login();
+			authenticated = true;
+			subject = ctx.getSubject();
+			
+			for (Principal p : subject.getPrincipals()) {
+				if (log.isDebugEnabled()) {
+					// Watch this debug line if something doesn't work for you: the structure that is returned might
+					// differ in naming and structure. The JBoss LdapLoginModule returns two principals. One has the
+					// user itself, the other is called "Roles", is a Group and holds the role names that the user
+					// is authorized for (i.e. belongs to in the LDAP).
+					log.debug("Principal for " + username + ": " + p.toString());
+				}
+				
+				// Group is a subclass of Principal, and the members are the names of the roles
+				// as set up in the LDAP. In my example this is the cn attribute of an LDAP Group.
+				if ((p instanceof Group) && (ROLES_GROUP_NAME.equalsIgnoreCase(p.getName()))) {
+					Group g = (Group) p;
+					Enumeration<? extends Principal> members = g.members();
+					while (members.hasMoreElements()) {
+						Principal member = members.nextElement();
+						roles.add(member.getName());
+						if (log.isDebugEnabled()) {
+							log.debug("Added role " + member.getName() + " for username " + username + ".");
+						}
+					}
+				}
+			}
+		} catch (LoginException e) {
+			// You'll get a LoginException on a failed username/password combo.
+			authenticated = false;
+		}
+        return authenticated;
+    }
+
+    public Roles getRoles() {
+        return roles;
+    }
+
+    private class LoginCallbackHandler implements CallbackHandler {
+
+    	private String username;
+    	private String password;
+    	
+    	public LoginCallbackHandler(String username, String password) {
+    		this.username = username;
+    		this.password = password;
+    	}
+    	
+		public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+	    	for (int i = 0; i < callbacks.length; i++) {
+				Callback callback = callbacks[i];
+				if (callback instanceof NameCallback) {
+					((NameCallback) callback).setName(username);
+				} else if (callback instanceof PasswordCallback) {
+					PasswordCallback pwCallback = (PasswordCallback) callback;
+					pwCallback.setPassword(password.toCharArray());
+				} else {
+					throw new UnsupportedCallbackException(callbacks[i], "Callback type not supported");
+				}
+			}
+		}
+    	
+    }
+}
+\end{lstlisting}
+		\item Servlet de prueba:
+\begin{lstlisting}
+import java.io.IOException;
+import javax.servlet.*
+import javax.servlet.http.*;
+import javax.security.auth.login.*;
+import javax.security.auth.callback.*;
+import java.util.logging.Logger;
+ public class JAASLoginFilter implements Filter
+ {
+  private final static Logger log = Logger.getLogger(JAASLoginFilter.class.getName());
+   
+  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
+   {
+    login(request);
+    chain.doFilter(request, response);
+    logout(request);
+   }
+  public void init(FilterConfig filterConfig) {}
+  public void destroy() {}
+ }
+ 
+ static class LoginCallback implements CallbackHandler
+ {
+  private String username;
+  private String password;
+  
+  protected LoginCallback(String username, String password)
+  {
+   this.username = username;
+   this.password = password;
+  }
+
+  public void handle(Callback[] callbacks)
+  {
+   for(int i=0; i < callbacks.length; i++) 
+   {
+    if(callbacks[i] instanceof NameCallback)
+    {
+     NameCallback nameCallback = (NameCallback)callbacks[i];
+     nameCallback.setName(username);
+    } 
+    else if(callbacks[i] instanceof PasswordCallback) 
+    {
+     PasswordCallback passwordCallback = (PasswordCallback)callbacks[i];
+     passwordCallback.setPassword(password.toCharArray());
+    }
+   }
+  }
+ }
+
+ public static void login(ServletRequest request)
+ {
+  // Don't do anything if there is no session
+  
+  if(!(request instanceof HttpServletRequest)) 
+   return;
+  HttpSession session = ((HttpServletRequest)request).getSession(false);
+  if(session == null)
+   return;
+ 
+  // Get username and password from the session
+
+  String username = (String)session.getAttribute("username");
+  String password = (String)session.getAttribute("password");
+
+  // Don't login if the username or password isn't set
+
+  if(username == null || password == null)
+   return;
+  
+  // Login
+CallbackHandler handler = new LoginCallback(username, password);
+LoginContext lc = null;
+try {
+lc = new LoginContext("clientlogin",
+handler);
+lc.login();
+request.setAttribute("jaaslogincontext",
+lc);
+request.setAttribute("jaasusername",
+username);
+} catch (LoginException e) {
+log.warning("error logging in, username=" + username + " : " + e.getMessage());
+}
+}
+public static void logout(ServletRequest request)
+{
+LoginContext lc = (LoginContext)
+request.getAttribute("jaaslogincontext");
+String username = (String)
+request.getAttribute("jaasusername");
+if(lc == null || username == null) return;
+// Logout
+try {
+lc.logout();
+} catch (LoginException e) {
+log.warning("error logging out, username=" + username + " : " + e.getMessage());
+}
+}
+\end{lstlisting}
+	\end{enumerate}

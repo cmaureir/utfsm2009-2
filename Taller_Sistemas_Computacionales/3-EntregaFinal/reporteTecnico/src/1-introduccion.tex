@@ -1,0 +1,59 @@
+%1-introduccion. Explicar el contexto, problema abordado y los objetivos del trabajo. Definir cómo está organizado el informe.
+
+\subsection{Contexto}
+El Control de Acceso Lógico a aplicaciones y sistemas es el primer obstáculo a
+superar por un “atacante” para el acceso no autorizado a un equipo y a los
+datos que contiene. La utilización de métodos de seguridad combinados como la
+biometría permite reducir la probabilidad de éxito en los intentos de acceso
+por personal no autorizado.
+
+Los Controles de Acceso lógico son de vital importancia ya que permiten
+proteger los recursos de los equipos. Esto se acrecienta cuando estos recursos
+almacenan información confidencial, documentos clasificados, bases de datos
+internas del ejército y/o Ministerio de Defensa de un país.
+
+Este documento es una base para aplicar Control de Acceso Lógico en una máquina
+JBoss, para sus aplicaciones pertinentes, específicamente utilizando la API \emph{JAAS}.
+
+\emph{JAAS} son las siglas de \emph{Java Authentication and Authorization}. Se
+trata de una especificación integrada en la máquina virtual Java a partir de
+la versión 1.4 y cuya finalidad es la de definir un estándar para los procesos
+de autentificación y autorización.
+
+Es decir ambos procesos, autentificación y autorización están directamente
+relacionados con la seguridad de aplicaciones.
+
+Para contextualizar de una mejor manera definiremos los conceptos de \emph{autentificación} y \emph{autorización}.
+
+La \emph{autentificación} es el proceso por el cual un usuario o servicio tiene que
+autentificarse para poder acceder a ciertos servicios que ofrece el sistema.
+
+Existen distintas categorías de autentificación:
+\begin{itemize}
+	\item \textbf{¿Qué sabes?}: Información que el usuario conoce. Ej: Contraseñas, respuestas a preguntas como: "Nombre de tu mascota".
+	\item \textbf{¿Qué tienes?}: Elementos físicos que el usuario posee. Ej: Tarjetas bancarias.
+	\item \textbf{¿Quién eres?}: Técnicas biométricas como lectura de retina o huellas dactilares.
+\end{itemize}
+
+\newpage
+
+La \emph{autorización} es el proceso por el cual se controlan las acciones que tiene
+un usuario o servicio normalmente ya autenticado puede realizar, para ello se le
+conceden o deniegan permisos.
+
+Categorías de autorización:
+\begin{itemize}
+    \item \textbf{Autorización declarativa}: En este tipo de autorización los privilegios son gestionados un administrador independientemente de manera externa al código de la aplicación
+    \item \textbf{Autorización programática}: En este tipo de autorización las decisiones de autorización se realizan desde el código fuente de la aplicación.
+\end{itemize}
+
+\subsection{Objetivos}
+
+Los objetivos específicos planteados en este informe, para la configuración y funcionamiento de la aplicación JAAS sobre máquina JBoss son los siguientes:
+
+\begin{itemize}
+	\item Instalación de API JAAS
+	\item Integración de LDAP en JBoss usando JAAS
+	\item Integración de JAAS en Tomcat
+	\item Implementación de Single Sign-On
+\end{itemize}

@@ -1,0 +1,118 @@
+%Organización del grupo de trabajo, miembros, roles asumidos y trabajo realizado por cado uno de ellos
+
+\subsection{Sobre la organización}
+
+La organización del presente equipo de trabajo se basa en una estructura piramidal,
+teniendo un \emph{Jefe de Proyecto} a cargo de organizar, coordinar y verificar
+las actividades realizadas durante todo el semestre.
+
+Los medios de comunicación oficiales para el desarrollo del proyecto,
+fueron un \emph{alias de correo}~\footnote{tsc@csrg.inf.utfsm.cl} para realizar los comunicados oficiales,
+tareas pendientes, división de tareas para la realización de informes, etc,
+medio que cumplió un rol fundamental para que cada miembro se enterara
+de cada uno de los hitos a lo largo del desarrollo del presente proyecto.
+
+Otro medio de comunicación fue \emph{Skype}~\footnote{http://www.skype.com} que ayudó fielmente a la discusión
+de ciertas ideas a lo largo del proyecto, como por ejemplo, el cómo implementar
+ciertos servicios, configuraciones del servidor que se utilizó para el trabajo,
+analizar tareas realizadas por el resto del equipo, etc.
+
+Finalmente el papel que jugó nuestro \emph{TRAC}~\footnote{https://trac.inf.utfsm.cl/proyectos/tsc\_02/},
+fue la espina dorsal de nuestro proyecto, pues es el medio oficial en el cual plasmábamos
+nuestro trabajo con tutoriales, documentos relacionados con el \emph{Control de Acceso Lógico},
+instructivos, etc, todo tipo de documentos e información relevante para una correcta implementación
+de nuestra tarea asignada para éste semestre.
+
+
+\subsection{Sobre los miembros}
+
+Cada miembro del equipo de trabajo tenía como responsabilidad cierto rol,
+en función directa a la realización de las actividades planificadas en el
+semestre.
+
+Si bien es cierto, las personas encargadas de ciertas actividades, debían
+velar por que todo se desarrollara de la mejor forma posible, también es
+importante recalcar que todos estuvimos dentro de las tomas de decisiones
+y puesta en práctica de las otras actividades, para poder saber completamente
+el estado general del grupo y las actividades que todo el equipo realizaba.
+
+A continuación una tabla con los cargos de cada uno:
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline
+		Esteban Bombal    & Jefe de Proyecto \\\hline
+		Rodrigo Fernández & Área Documentación \\\hline
+		Ignacio Villacura & Área Técnica \\\hline
+		Gabriel Zamora    & Área Documentación \\\hline
+		Cristián Maureira & Área Técnica \\\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Sobre el trabajo}
+
+Durante el semestre nuestro equipo de trabajo poseía una \emph{Carta Gantt} la cual fue la guía
+para la realización de todas las actividades necesarias.
+
+Algunas de las principales tareas a lo largo del desarrollo de nuestro proyecto fueron:
+
+\begin{description}
+	\item[Investigación sobre el tema:]
+		\begin{itemize}
+			\item \texttt{Encargados:} Todos
+			\item \texttt{Descripción:}
+				Durante el proceso de Investigación el grupo se centro en comprender el funcionamiento
+				de autenticación mediante \emph{JAAS}, los beneficios que dicha aplicación nos ofrece y la
+				escalabilidad que otorga, entre ellos el \emph{Single Sign-On}, sin dejar de lado otras temáticas
+				como lo fueron \emph{LDAP}, \emph{JBoss}, etc.
+		\end{itemize}
+	\item[Implementación de nuestra máquina de trabajo:]
+		\begin{itemize}
+			\item \texttt{Encargados:} Todos
+			\item \texttt{Descripción:}
+				Se realizó la instalación de una máquina de trabajo desde cero,
+				en el Laboratorio de Computación (LabComp)~\footnote{http://labcomp.inf.utfsm.cl}
+				con el sistema operativo \emph{Fedora 11} para poder realizar todas nuestro
+				trabajo.
+		\end{itemize}
+	\item[Implementación Servidor JBoss:]
+		\begin{itemize}
+			\item \texttt{Encargados:} Cristián Maureira y Gabriel Zamora
+			\item \texttt{Descripción:}
+				Fue necesario poder comprender el funcionamiento de las distintas aplicaciones
+				que los demás proyectos se encontraban realizando, como lo fue el caso de un servidor JBoss.
+				Por lo cual tuvimos que implementar nuestro propio servidor JBoss para poder hacer las pruebas
+				correspondientes, que ayudaran a realizar nuestro trabajo.
+		\end{itemize}
+	\item[Integración JAAS y JBoss:]
+		\begin{itemize}
+			\item \texttt{Encargados:} Ignacio Villacura y Esteban Bombal
+			\item \texttt{Descripción:}
+				Se realizaron todas las actividades necesarias para poder tener en funcionamiento
+				JAAS dentro de nuestro servidor JBoss.
+		\end{itemize}
+	\item[Integración LDAP en JBoss mediante JAAS:]
+		\begin{itemize}
+			\item \texttt{Encargados:} Rodrigo Fernández
+			\item \texttt{Descripción:}
+				Se instaló LDAP en nuestra máquina de prueba, con algunos
+				usuarios de prueba, para poder probar el funcionamiento
+				de JAAS en nuestro servidor JBoss.
+		\end{itemize}
+	\item[Implementación de Single Sign-On en servidor JBoss:]
+		\begin{itemize}
+			\item \texttt{Encargados:} Gabriel Zamora, Ignacio Villacura y Cristián Maureira
+			\item \texttt{Descripción:}
+				Se realizaron las configuraciones necesarias para poder utilizar
+				Single Sign-On en nuestro servidor JBoss, las cuales contaron
+				con la modificación de algunos archivos de configuración de JBoss
+				para que reconociera dicha función.
+		\end{itemize}
+	\item[Integración con Tomcat:]
+		\begin{itemize}
+			\item \texttt{Encargados:} Esteban Bombal y Rodrigo Fernández
+			\item \texttt{Descripción:}
+				Se realizaron las configuraciones necesarias para poder autentificar en un servidor
+				Tomcat mediante JAAS.
+		\end{itemize}
+\end{description}

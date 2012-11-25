@@ -1,0 +1,4 @@
+#!/bin/bash
+for i in $(ls *.dia); do
+	dia $i -e ../img/$(echo $i | sed 's/.dia//').png
+done;

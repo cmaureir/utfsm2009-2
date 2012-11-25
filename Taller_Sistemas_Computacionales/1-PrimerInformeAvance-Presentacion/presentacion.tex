@@ -1,0 +1,146 @@
+%%% Esqueleto base de la presentacion
+%%% No agregar las paginas con un include
+%%% Lo que quieran aportar deben ser usuarios del TRAC
+
+\documentclass{beamer}
+\usepackage[spanish,activeacute]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{graphics}
+\definecolor{gray2}{rgb}{100,100,100}
+
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          alternativetitlepage=true,% Use the fancy title page.
+          titlepagelogo=img/logo,% Logo for the first page.
+          watermark=img/di-off,% Watermark used in every page.
+          watermarkheight=100px,% Height of the watermark.
+          watermarkheightmult=4,% The watermark image is 4 times bigger
+                                % than watermarkheight.
+          ]{Torino}
+
+\usecolortheme{nouvelle}
+
+\author{\normalsize
+\textbf{Integrantes:}\\
+Cristian Maureira\\
+Rodrigo Fernández\\
+Ignacio Villacura\\
+Gabriel Zamora\\
+\vspace{0.2cm}
+\textbf{Jefe de Proyecto:}\\
+Esteban Bombal\\
+\textcolor{gray}{ebombal@alumnos.inf.utfsm.cl}
+}
+\title{\Huge Control de Acceso Lógico}
+\subtitle{\Large \textit{``Informe de Avance I''}}
+\institute{Universidad Técnica Federico Santa María}
+%\date{\today}
+
+\begin{document}
+\include{src/portada}
+
+\section{Resumen}
+
+\frame{
+\frametitle{Resumen}
+
+Implementación de un framework de seguridad basado en Java, llamado \textbf{JAAS}. 
+Establecer una conexión a servicios de directorios mediante \textbf{LDAP} para la conexión a la máquina \textbf{JBoss} correspondiente.
+
+}
+
+\section{Revisión del plano de trabajo}
+\frame{
+\frametitle{}
+\begin{center}
+	\Huge Revisión del plano del trabajo
+\end{center}
+}
+
+\frame{
+\frametitle{Organización}
+\begin{itemize}
+	\item Actividades Carta Gantt (8 sept. - 20 nov.)
+	\item Áreas centrales de las actividades:
+	\begin{itemize}
+		\item Investigación
+		\item Implementación
+	\end{itemize}
+\end{itemize}
+}
+
+\frame{
+\frametitle{}
+\begin{center}
+	\Huge Proceso de Investigación
+\end{center}
+}
+
+\frame{
+\frametitle{Proceso de Investigación}
+\begin{itemize}
+	\item Comprender funcionamiento de la autentificación mediante \emph{Java Authentication and Authorization Service} (JAAS)
+	\item Analizar la posibilidad de integrar JAAS con Single Sign-On (SSO)
+	\item Confirmar la viabilidad de una futura integración con otros proyectos del ramo
+	\item Capacitación con respecto al funcionamiento e implementación de servidores \emph{JBoss}
+	\item Estudio de la integración entre JAAS y JBoss
+\end{itemize}
+}
+
+\frame{
+\frametitle{}
+\begin{center}
+	\Huge Proceso de Implementación
+\end{center}
+}
+
+\frame{
+\frametitle{Proceso de Implementación}
+\begin{itemize}
+	\item Máquina de trabajo: (LabComp)
+	\begin{itemize}
+		\item Fedora 11 - Leonidas
+		\item 512M RAM
+		\item 2.80GHz CPU
+	\end{itemize}
+	\item Implementación de un servidor \emph{JBoss}
+	\item Implementación de un servicio de directorio \emph{LDAP}
+	\item Configuración de \emph{JAAS}
+	\item Integración de \emph{LDAP} con \emph{JAAS} en el servidor \emph{JBoss}
+\end{itemize}
+}
+
+\frame{
+\frametitle{Aspectos sobre la planificación}
+\begin{itemize}
+	\item Cumplimiento de la Carta Gantt
+	\item Punto pendiente: Probar la implementación de SSO con JAAS
+	\item Ausencia de actividades no planificadas
+	\item Futura Integración con el grupo de \emph{Servicio Web}
+\end{itemize}
+}
+
+
+\section{Reprogramación de actividades}
+\frame{
+\frametitle{Reprogramación de actividades}
+\begin{itemize}
+	\item Correcta estimación de tiempos para el trabajo futuro
+	\item Actividades restantes:
+	\begin{itemize}
+		\item Implementación de SSO con JAAS
+		\item Integración de JAAS con Servidores Web
+		\item Integración de proyectos del ramo
+	\end{itemize}
+\end{itemize}
+}
+
+\frame{
+\frametitle{}
+\begin{center}
+	\Huge ¿Preguntas?
+\end{center}
+}
+\end{document}

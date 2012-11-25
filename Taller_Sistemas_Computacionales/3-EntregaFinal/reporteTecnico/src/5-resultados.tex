@@ -1,0 +1,25 @@
+%5-resultados. Pruebas, mediciones, resultados y conclusiones
+
+\begin{enumerate}
+
+\item \textbf{Pruebas:} La mayor parte de las pruebas se hicieron cuando se tuvo configurado el
+servidor \emph{JBoss} con \emph{JAAS} y \emph{SSO}. La única forma de saber si la configuración fue la correcta, es
+con un servlet en el servidor Tomcat que intentase autentificar con usuario y contraseña al
+servidor \emph{JBoss}. Esta es la única forma de ver en forma tangible si la configuración tiene todo lo necesario.
+
+\item \textbf{Resultados:} Los resultados obtenidos son varios. En primer lugar fue factible
+habilitar autentificación vía \emph{JAAS} en un servidor \emph{JBoss}. Por otro lado se logro que se pudiese
+autentificar contra \emph{LDAP} al igual que utilizara el \emph{SSO} para sesiones independientes. Lo único
+que no se llevo a cabo fue la integración con los demás grupos, todos los resultados obtenidos
+fue en un servidor de pruebas propio.
+
+\item \textbf{Conclusiones:} Si bien no se logro la integración con los demás grupos se usaron
+todos los servicios que se requerían, ya sea \emph{LDAP}, \emph{Tomcat} y \emph{JBoss}. Por otro la configuración
+de \emph{JAAS} y \emph{SSO} fue bastante simple en el servidor \emph{JBoss}, no así la implementación de un servlet
+que integra todo lo visto para poder ver tangiblemente. Este punto fue el mas difícil ya que se
+tuvo que programar. 
+Finalmente, podemos darnos cuenta que \emph{JAAS} es una herramienta bastante útil en cuanto a
+\emph{Control de Acceso Lógico}, para poder restringir el uso de aplicaciones en un servidor determinado;
+y si se une con el método \emph{Single Sign-On}, se convierte en una opción totalmente viable para la autenticación
+y autorización de usuarios.
+\end{enumerate}

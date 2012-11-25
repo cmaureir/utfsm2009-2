@@ -1,0 +1,6 @@
+<jboss-web>
+	<security-domain>
+		java:/jaas/MiAuthenticationPolicy
+	</security-domain>
+	<context-root>/Web1</context-root>
+</jboss-web>

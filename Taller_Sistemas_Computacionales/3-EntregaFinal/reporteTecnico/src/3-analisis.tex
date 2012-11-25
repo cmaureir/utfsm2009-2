@@ -1,0 +1,24 @@
+%3-analisis. Identificación, evaluación y selección de alternativas para el proyecto
+Para cada objetivo planteado al comienzo de este reporte se analizaron las
+alternativas existentes actualmente y según cada caso se plantea la selección
+de las mas adecuadas:
+\begin{itemize}
+	\item \textbf{Instalación API JAAS}: Para este primer paso la única
+manera de proceder es seguir los pasos descritos más adelante para contar con
+la API \emph{JAAS} funcional.
+	\item \textbf{Integración de LDAP en JBoss usando JAAS}: Tomando en
+consideración que \emph{JBoss} usa el módulo LoginLdapModule para conectarse
+con \emph{LDAP} es necesario configurar este módulo para usar la autenticación y la autorización mediante \emph{JAAS}
+	\item \textbf{Integración de JAAS en Tomcat}: Aunque es posible utilizar
+JAAS en Tomcat como un mecanismo de autenticación (JAASRealm), la flexibilidad
+del marco de JAAS se pierde una vez que el usuario se autentica. Esto es porque
+los principios usados para designar al "usuario" y "rol", ya no están disponibles
+en el contexto de seguridad en el que se ejecuta la webapp. El resultado de la
+autenticación sólo está disponible a través de request.getRemoteUser() y
+request.isUserInRole().
+
+Esto reduce el marco de JAAS para fines de autorización a un simple usuario/sistema
+de roles, que pierde su conexión con la política de seguridad de Java. 
+
+Es por esto que la solución planteada en este reporte técnico es ajustar la ejecución de los servlets en la implementación de JAAS, de manera que nos permita reforzar el control de acceso con una simple llamada en nuestro código.
+\end{itemize}

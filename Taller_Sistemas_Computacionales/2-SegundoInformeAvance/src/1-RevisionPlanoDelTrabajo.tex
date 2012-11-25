@@ -1,0 +1,71 @@
+%REVISIÓN DEL PLAN DE TRABAJO
+
+%1. Refiérase brevemente a las actividades que se planificaron para el período a
+%cumplirse en el próximo hito (informe de avance, 5 de Octubre) e indique qué
+%grado de cumplimiento tiene respecto a lo planificado inicialmente. Resalte los
+%principales avances logrados.
+
+\begin{enumerate}
+	\item Para el presente hito, el grupo de \emph{Control de Acceso Lógico},
+		realizó las actividades que quedaron pendientes según el informe de avance
+		del 4 de Octubre.\\
+		Las tareas que se realizaron son:
+		\begin{enumerate}
+			\item Implementación de SSO (Single Sing On) en JBOSS. 
+			\item Integración de JAAS con Servidor Web (Tomcat).
+		\end{enumerate}  
+
+		Durante el proceso de implementación de éstas soluciones,
+		el equipo se centró en poner en práctica lo investigado,
+		siendo crucial para poder integrar SSO a JBOSS y JAAS con Tomcat.
+		Por otro lado tuvimos que implementar nuestro propio Servidor Tomcat para hacer las pruebas pertinentes,
+		antes de poder implementarlo en el servidor del equipo de \emph{Servidores Web}.
+
+		En primer lugar, hicimos la integración SSO, que resulto ser una tarea simple
+		debido a que la integración consta sólo de una activación en el servidor.
+		En nuestro caso tuvimos que editar la configuración del servidor, del perfil que estábamos
+		utilizando.
+		\begin{verbatim}
+		[root@tsc ~]# vim jboss-5.1.0.GA/server/default/deploy/jbossweb.sar/server.xml
+		\end{verbatim}
+		Luego des-comentamos la siguiente línea:
+		\begin{verbatim}
+		<Valve className="org.apache.catalina.authenticator.SingleSignOn" />
+		\end{verbatim}
+		Finalmente tenemos que reiniciar nuestro servidor JBoss,
+		para que la configuración tenga efecto.
+
+		Para comprobar que realmente SSO esta funcionando,
+		basta con realizar una prueba con una pagina web en jsp y un login,
+		información que tenemos documentada en nuestro TRAC.
+
+		Respecto al segundo punto, aunque es posible utilizar JAAS en Tomcat como
+		un mecanismo de autenticación (JAASRealm), la flexibilidad del marco de JAAS se pierde una vez que el usuario se autentica.
+		Esto es porque los principios usados para designar al ``usuario'' y
+		``rol'', ya no están disponibles en el contexto de seguridad
+		en el que se ejecuta la webapp.
+		Esto reduce el marco de JAAS para fines de autorización a un simple usuario/sistema de roles, que pierde su conexión con la
+		política de seguridad de Java.
+		
+		En nuestro intento por integrar la autenticación JAAS con Tomcat ponemos una aplicación plenamente utilizando autorización
+		JAAS en su lugar, utilizando un par de trucos para hacer frente a algunas de las idiosincrasias de Tomcat. 
+
+	\item Hasta el momento, se han realizado las partes más importantes del proyecto,
+		como son la implementación de SSO en JBOSS y la integración con un servidor Web, Tomcat.
+		El único punto que no alcanzamos a realizar fue la integración con el grupo de \emph{Servidores Web},
+		ya que probamos la solución para poder demostrar que esta funcionando SSO y así asegurarnos que la integración
+		funciona correctamente antes de implementarla en los servidores del equipo asignado.
+
+	\item Durante la realización de la presente etapa, no encontramos actividades extras para poder cumplir con las tareas
+		propuestas anteriormente. La única dificultad que tuvimos fue tener que levantar nuestro propio servidor Tomcat
+		y programar un \emph{servlet} para poder comprobar que nuestras configuraciones estuvieran trabajando realmente.
+
+	\item Para la última parte del proyecto nos queda integrar todo lo hecho en nuestros servidores, con los servicios
+		desarrollados por los grupos \emph{Servidor JBOSS} y \emph{Servidores Web}. Esto será una tarea, mas o menos, rápida,
+		pero no libre de problemas, ya que si las configuraciones son distintas a las de nuestros servidores tendremos que cambiar
+		las presentes implementaciones para que puedan desenvolverse en los servidores correspondientes.
+		Como medida correctiva, antes de implementar nuestras soluciones en los servidores de los grupos antes mencionados,
+		buscaremos que nuestras soluciones sean lo mas alto nivel posible para que puedan ser implementadas sin ocurrir ningún error,
+		razón por la cual poseemos una documentación completa, tanto con documentos realizados por nosotros como externos.
+
+\end{enumerate}
